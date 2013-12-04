@@ -107,11 +107,9 @@ def play_dealer
 	dealer_hand_value = get_hand_value($dealer_hand)
 	if dealer_hand_value > 21
 		round_won
-	elsif dealer_hand_value < 21
-			round_lost
 	else
-		puts "Dealer has BlackJack!"
-		round_lost
+		puts "Dealer has BlackJack!" if dealer_hand_value == 21
+			round_lost
 	end
 
 end
@@ -144,8 +142,10 @@ def get_hand_value(hand)
 	hand_value = 0
 	hand.each do |c|
 		card_value = c.split(';')[1]
-		if ['A', 'K', 'J', 'Q'].include? card_value
+		if ['K', 'J', 'Q'].include? card_value
 			hand_value += 10
+		elsif card_value == 'A'
+			hand_value += 11
 		else
 			hand_value += card_value.to_i
 		end		
@@ -154,7 +154,7 @@ def get_hand_value(hand)
 	if hand_value > 21 && hand.any? { |c| c.split(';')[1] == 'A'}
 		aces = hand.select{|c| c.split(';')[1] == 'A'}
 		while hand_value > 21 && aces.any?
-			hand_value -= 9
+			hand_value -= 10
 			aces.pop
 		end
 	end
