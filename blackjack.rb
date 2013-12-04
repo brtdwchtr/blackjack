@@ -61,19 +61,14 @@ end
 def play_a_round
 	$cards.shuffle!
 	deal_cards
-
-	puts
-	puts "your cards:"
-	show_hand($player_hand)
+	show_player_cards
 	
 	show_action_options
 	selected_action = gets.chomp
 
 	while selected_action == "h" do
 		add_card($player_hand)
-
-		puts "your cards:"
-		show_hand($player_hand)
+		show_player_cards
 
 		hand_value = get_hand_value($player_hand)
 		if hand_value < 21
@@ -88,10 +83,8 @@ def play_a_round
 	if selected_action == "s" || player_hand_value == 21
 		puts "You have BlackJack!" if player_hand_value == 21
 		play_dealer
-	elsif player_hand_value > 21
-		puts "You are bust."
-		round_lost
 	else
+		puts "You are bust." if player_hand_value > 21
 		round_lost
 	end
 
@@ -171,6 +164,12 @@ end
 def show_action_options
 	puts "what would you like to do?"
 	puts "(h)it (s)tand (g)ive up"
+end
+
+def show_player_cards
+	puts
+	puts "your cards:"
+	show_hand($player_hand)
 end
 
 def show_hand(hand)
